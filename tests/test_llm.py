@@ -8,12 +8,11 @@ import llm
 class FakeOpenAI:
     def __init__(self):
         self.calls = []
-        self.chat = SimpleNamespace(completions=SimpleNamespace(create=self._create))
+        self.responses = SimpleNamespace(create=self._create)
 
     def _create(self, **kwargs):
         self.calls.append(kwargs)
-        message = SimpleNamespace(content="openai 요약")
-        return SimpleNamespace(choices=[SimpleNamespace(message=message)])
+        return SimpleNamespace(output_text="openai 요약")
 
 
 def test_should_call_openai_summary_model_and_return_text():
@@ -22,11 +21,9 @@ def test_should_call_openai_summary_model_and_return_text():
     text = llm.generate("openai", "summary", "시스템", "리포트", client=client)
 
     assert text == "openai 요약"
-    assert client.calls[0]["model"] == "gpt-5-mini"
-    assert client.calls[0]["messages"] == [
-        {"role": "system", "content": "시스템"},
-        {"role": "user", "content": "리포트"},
-    ]
+    assert client.calls[0]["model"] == "gpt-6-luna"
+    assert client.calls[0]["instructions"] == "시스템"
+    assert client.calls[0]["input"] == "리포트"
 
 
 def test_should_use_larger_openai_model_for_insight():
@@ -34,7 +31,7 @@ def test_should_use_larger_openai_model_for_insight():
 
     llm.generate("openai", "insight", "시스템", "요약들", client=client)
 
-    assert client.calls[0]["model"] == "gpt-5"
+    assert client.calls[0]["model"] == "gpt-6.2-sol"
 
 
 def test_should_reject_unknown_provider():
@@ -90,4 +87,18 @@ def test_should_raise_when_claude_refuses():
 
 
 def test_should_read_api_key_env_name_per_provider():
-    assert llm.API_KEY_ENV == {"openai": "OPENAI_API_KEY", "claude": "ANTHROPIC_API_KEY"}
+    assert llm.API_KEY_ENV == {"openai": "TAPLY_API_KEY", "claude": "TAPLY_API_KEY"}
+
+
+def test_should_send_openai_calls_through_gateway():
+    client = llm.default_client("openai", api_key="test-key")
+
+    assert str(client.base_url).rstrip("/") == "https://api.songseungwoon.com/v1"
+    assert client.api_key == "test-key"
+
+
+def test_should_send_claude_calls_through_gateway():
+    client = llm.default_client("claude", api_key="test-key")
+
+    assert str(client.base_url).rstrip("/") == "https://api.songseungwoon.com"
+    assert client.api_key == "test-key"

@@ -34,8 +34,7 @@ jobs:
       id: run
       env:
         AI_PROVIDER: ${{ inputs.provider || vars.AI_PROVIDER || 'openai' }}
-        OPENAI_API_KEY: ${{ secrets.OPEN_API_KEY }}
-        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        TAPLY_API_KEY: ${{ secrets.TAPLY_API_KEY }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       run: python scrap_and_summary.py
