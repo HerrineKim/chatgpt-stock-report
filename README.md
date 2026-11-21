@@ -22,19 +22,18 @@
 
 | 종류 | 이름 | 값 |
 | --- | --- | --- |
-| Secret | `ANTHROPIC_API_KEY` | Anthropic API 키 (Claude로 요약할 때) |
-| Secret | `OPEN_API_KEY` | OpenAI API 키 (ChatGPT로 요약할 때) |
+| Secret | `TAPLY_API_KEY` | TAPLY AI 게이트웨이 개인 키 (Claude·OpenAI 공용) |
 | Secret | `TELEGRAM_BOT_TOKEN` | @BotFather에서 만든 봇 토큰 |
 | Secret | `TELEGRAM_CHAT_ID` | 봇에게 아무 메시지나 보낸 뒤 `https://api.telegram.org/bot<토큰>/getUpdates`에서 확인한 `chat.id` |
 | Variable | `AI_PROVIDER` | `claude` 또는 `openai`. 없으면 `openai` |
 
-고른 AI의 키만 있으면 됩니다. 포크한 저장소라면 Actions 탭에서 워크플로를 한 번 켜야 스케줄이 돕니다.
+Claude와 OpenAI 모두 TAPLY 게이트웨이(`https://api.songseungwoon.com`)를 거쳐 부릅니다. 주소는 `llm.py`의 `GATEWAY_BASE_URL`에 있습니다. 포크한 저장소라면 Actions 탭에서 워크플로를 한 번 켜야 스케줄이 돕니다.
 
 ## 요약 AI
 | `AI_PROVIDER` | 리포트별 요약 | 시장 인사이트 |
 | --- | --- | --- |
 | `claude` | claude-haiku-5-5 | claude-haiku-5-5 |
-| `openai` | gpt-5-mini | gpt-5 |
+| `openai` | gpt-6-luna | gpt-6.2-sol |
 
 - 한 번만 다른 AI로 돌리려면 Actions → Scraper & Summary → Run workflow에서 provider를 고릅니다.
 - 모델은 `llm.py`의 `MODELS`에서 바꿉니다.
@@ -44,7 +43,7 @@
 ```bash
 python -m venv .venv && .venv/bin/pip install -r requirements.txt pytest
 .venv/bin/python -m pytest -q
-AI_PROVIDER=claude ANTHROPIC_API_KEY=... TELEGRAM_BOT_TOKEN=... TELEGRAM_CHAT_ID=... .venv/bin/python scrap_and_summary.py
+AI_PROVIDER=claude TAPLY_API_KEY=... TELEGRAM_BOT_TOKEN=... TELEGRAM_CHAT_ID=... .venv/bin/python scrap_and_summary.py
 ```
 텔레그램 값을 빼면 발송 없이 요약 파일만 만듭니다.
 

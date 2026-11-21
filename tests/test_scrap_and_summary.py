@@ -35,7 +35,7 @@ def test_should_put_insight_before_company_summaries():
 def test_should_omit_insight_section_when_insight_is_empty():
     markdown = scrap_and_summary.build_report_markdown("2026.11.10", "openai", "", ["## A"])
 
-    assert markdown == "# 2026.11.10 stock report\n\n> 요약: ChatGPT (gpt-5-mini, gpt-5)\n\n## A"
+    assert markdown == "# 2026.11.10 stock report\n\n> 요약: ChatGPT (gpt-6-luna, gpt-6.2-sol)\n\n## A"
 
 
 def test_should_extract_text_from_downloaded_pdf():
