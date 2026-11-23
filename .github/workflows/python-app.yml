@@ -35,6 +35,9 @@ jobs:
       env:
         AI_PROVIDER: ${{ inputs.provider || vars.AI_PROVIDER || 'openai' }}
         TAPLY_API_KEY: ${{ secrets.TAPLY_API_KEY }}
+        # 게이트웨이가 러너 IP를 막을 때 쓰는 직접 호출용 키(없어도 된다)
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        OPEN_API_KEY: ${{ secrets.OPEN_API_KEY }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       run: python scrap_and_summary.py
