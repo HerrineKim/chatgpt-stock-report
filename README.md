@@ -23,11 +23,12 @@
 | 종류 | 이름 | 값 |
 | --- | --- | --- |
 | Secret | `TAPLY_API_KEY` | TAPLY AI 게이트웨이 개인 키 (Claude·OpenAI 공용) |
+| Secret | `ANTHROPIC_API_KEY`, `OPEN_API_KEY` | (선택) 게이트웨이가 막혔을 때 제공사 API를 직접 부르는 키 |
 | Secret | `TELEGRAM_BOT_TOKEN` | @BotFather에서 만든 봇 토큰 |
 | Secret | `TELEGRAM_CHAT_ID` | 봇에게 아무 메시지나 보낸 뒤 `https://api.telegram.org/bot<토큰>/getUpdates`에서 확인한 `chat.id` |
 | Variable | `AI_PROVIDER` | `claude` 또는 `openai`. 없으면 `openai` |
 
-Claude와 OpenAI 모두 TAPLY 게이트웨이(`https://api.songseungwoon.com`)를 거쳐 부릅니다. 주소는 `llm.py`의 `GATEWAY_BASE_URL`에 있습니다. 포크한 저장소라면 Actions 탭에서 워크플로를 한 번 켜야 스케줄이 돕니다.
+Claude와 OpenAI 모두 TAPLY 게이트웨이(`https://api.songseungwoon.com`)를 거쳐 부릅니다. 주소는 `llm.py`의 `GATEWAY_BASE_URL`에 있습니다. 게이트웨이 앞 Cloudflare가 Actions 러너 IP에 봇 챌린지를 돌려주거나 연결이 안 되면, 직접 호출용 키가 등록된 경우에 한해 그 실행은 제공사 API를 직접 부릅니다(OpenAI는 이때 gpt-5-mini·gpt-5). 포크한 저장소라면 Actions 탭에서 워크플로를 한 번 켜야 스케줄이 돕니다.
 
 ## 요약 AI
 | `AI_PROVIDER` | 리포트별 요약 | 시장 인사이트 |
